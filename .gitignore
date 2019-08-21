@@ -1,0 +1,5 @@
+.env
+secret.yaml
+*.pyc
+*.sqlite3
+.mypy_cache/

@@ -1,0 +1,76 @@
+{% extends 'newsletter/base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h3>Config</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <h5>Existing Queues</h5>
+        {% if queues %}
+        {% for queue in queues %}
+        <p>{{ queue.queue_name }}{% if perms.config.delete_queue_filter %} | <a href="{% url 'config:delete_queue' queue.id %}">[x]</a>{% endif %}</p>
+        {% endfor %}
+        {% else %}
+        <p>No queues found</p>
+        {% endif %}
+    </div>
+    <div class="col">
+        <h5>Last 5 Emails</h5>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                  <th scope="col">Subject</th>
+                  <th scope="col">Queue</th>
+                  <th scope="col">Processed On</th>
+                  <th scope="col">Reprocess</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for email in processed_emails %}
+                <tr>
+                    <th>{{ email.subject }}</th>
+                    <th>{{ email.sent_to.queue_name }}</th>
+                    <th>{{ email.processed_on }}</th>
+                    <th><a href="{% url 'config:delete_processed_email' email.id %}">Reprocess</a></th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% if perms.config.add_queue_filter %}
+<div class="row">
+    <div class="col">
+        <h5>Create a Queue</h5>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form action="{% url 'config:create_queue' %}" method=POST>
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label" for="label_id">Label Name</label>
+                <select name="label_id" class="form-control">
+                {% for label in labels %}
+                    <option value="{{ label.id }}">{{ label.name }}</option>
+                {% endfor %}
+            </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="queue_name">Queue Name</label>
+                <input name="queue_name" class="form-control" type="text">
+            </div>
+            <input class="btn btn-primary" type="submit" value="Add Filters">
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="row">
+    <div class="col">
+        <h5>No permissions</h5>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

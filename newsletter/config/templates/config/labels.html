@@ -1,0 +1,17 @@
+{% extends 'newsletter/base.html' %}
+{% block content %}
+<div class="row">
+    <h5>Labels</h5>
+</div>
+<div class="row">
+<form action="{% url 'config:create_filters' %}" method=POST>
+    {% csrf_token %}
+    {% for label in labels %}
+    <div class="form-group form-check">
+        <input id="checkbox{{ loop.index }}" class="form-check-input" name="filters[]" value="{{ label.id }}" type="checkbox" {% if label.id in existing_filters %} checked {% endif %}>{{ label.name }}</input><br>
+    </div>
+    {% endfor %}
+    <input class="btn btn-primary" type="submit" value="Add Filters">
+</form>
+</div>
+{% endblock %}

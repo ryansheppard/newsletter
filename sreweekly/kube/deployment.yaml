@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sreweekly
+  labels:
+    app: sreweekly
+  namespace: newsletter
+spec:
+  selector:
+    matchLabels:
+      app: sreweekly
+  template:
+    metadata:
+      labels:
+        app: sreweekly
+    spec:
+      containers:
+      - name: sreweekly
+        imagePullPolicy: Always
+        image: rshep/sreweekly-consumer:latest
+        envFrom:
+        - configMapRef:
+            name: sreweekly
+        - secretRef:
+            name: sreweekly
