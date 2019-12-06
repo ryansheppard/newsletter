@@ -4,7 +4,7 @@ django-celery-results==1.1.2
 certifi==2019.6.16
 chardet==3.0.4
 defusedxml==0.6.0
-Django==2.2.4
+Django==2.2.8
 idna==2.8
 oauthlib==3.0.2
 PyJWT==1.7.1
